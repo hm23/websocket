@@ -65,15 +65,15 @@ class SocketWSServer extends SocketServer {
       this.applyMiddlewares(ws, async () => {
         try {
           this.enforceAuth(ws);
-          ws.tenant = ws.request.tenant;
-          ws.user = ws.request.user?.id;
+          ws.tenant = cds.context.tenant;
+          ws.user = cds.context.user?.id;
           const facade = {
             service,
             socket: ws,
             get context() {
               return {
-                id: ws.request.correlationId,
-                user: ws.request.user,
+                id: cds.context.correlationId,
+                user: cds.context.user,
                 tenant: ws.request.tenant,
                 http: { req: ws.request, res: ws.request.res },
                 ws: { service: facade, socket: ws },
